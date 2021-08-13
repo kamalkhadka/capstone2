@@ -1,7 +1,7 @@
 import express, { json } from 'express';
 import morgan from 'morgan';
 import portfolioRouter from './portfolioRoutes.js';
-import userRoutes from './userRoutes.js';
+import userRoutes from './routes/users.js';
 
 const app = express();
 

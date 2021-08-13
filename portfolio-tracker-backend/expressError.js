@@ -8,4 +8,4 @@ class ExpressError extends Error {
     }
 }
 
-momdule.exports = ExpressError;
+export default ExpressError;
