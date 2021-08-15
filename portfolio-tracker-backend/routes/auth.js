@@ -1,6 +1,6 @@
 import { Router } from "express";
 import bcrypt from "bcrypt";
-import DB_URI, { BCRYPT_WORK_FACTOR } from "../config.js";
+import DB_URI, { BCRYPT_WORK_FACTOR, SECRET_KEY } from "../config.js";
 import client from "../db.js";
 import ExpressError from "../expressError.js";
 import { StatusCodes } from 'http-status-codes';
@@ -45,16 +45,16 @@ authRoutes.post("/login", async (req, res, next) => {
 
         const user = await getUserByEmail(email);
 
-        if(user){
+        if (user) {
 
-            if(await bcrypt.compare(password, user.password)){
-                const token = jsonwebtoken.sign({id: user.id, role: user.role})
-                return res.json("Logged in");
-            }else{
+            if (await bcrypt.compare(password, user.password)) {
+                const token = jsonwebtoken.sign({ id: user.id, role: user.role }, SECRET_KEY);
+                return res.json({ message: "Logged in",  token });
+            } else {
                 throw new ExpressError("Invalid email/password.", StatusCodes.BAD_REQUEST);
             }
 
-        }else{
+        } else {
             throw new ExpressError("User not found", StatusCodes.BAD_REQUEST);
         }
     } catch (e) {

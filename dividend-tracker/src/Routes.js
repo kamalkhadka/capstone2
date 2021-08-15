@@ -1,4 +1,5 @@
 import { Route, Switch } from "react-router-dom";
+import Dashboard from "./containers/Dashboard";
 import Home from "./containers/Home";
 import Login from "./containers/Login";
 import Signup from "./containers/Signup";
@@ -17,7 +18,7 @@ export default function Routes() {
                 <Login />
             </Route>
             <Route exact path="/dashboard">
-                // Dashboard
+                <Dashboard />
             </Route>
             <Route>
                 <NotFound />

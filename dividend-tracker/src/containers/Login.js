@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Form, Button } from "react-bootstrap";
+import { Redirect } from "react-router-dom";
 
 export default function Login(){
     const [email, setEmail] = useState("");
@@ -11,6 +12,8 @@ export default function Login(){
 
     function handleSubmit(event){
         event.preventDefault();
+        console.log("HERE");
+        return <Redirect to="/dashboard" />
     }
 
     return(
