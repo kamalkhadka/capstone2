@@ -1,17 +1,10 @@
-import  pg from "pg";
+import pg from "pg";
+import  DB_URI from "./config.js";
 
-let DB_URI;
-
-if (process.env.NODE_ENV === "test") {
-    DB_URI = "postgresql:///portfoliodb_test";
-} else {
-    DB_URI = "posgressql:///portfoliodb"
-}
-
-let db = new pg.Client({
+let client = new pg.Client({
     connectionString: DB_URI
 });
 
-db.connect();
+client.connect();
 
-export default db;
+export default client;
