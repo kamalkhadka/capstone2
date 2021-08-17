@@ -5,6 +5,8 @@ import client from "../db.js";
 import ExpressError from "../expressError.js";
 import { StatusCodes } from 'http-status-codes';
 import jsonwebtoken from "jsonwebtoken";
+import jsonschema from "jsonschema";
+import  loginSchema from "../schemas/loginSchema.js";
 
 const authRoutes = new Router();
 
@@ -49,7 +51,7 @@ authRoutes.post("/login", async (req, res, next) => {
 
             if (await bcrypt.compare(password, user.password)) {
                 const token = jsonwebtoken.sign({ id: user.id, role: user.role }, SECRET_KEY);
-                return res.json({ message: "Logged in",  token });
+                return res.json({ message: "Logged in", token });
             } else {
                 throw new ExpressError("Invalid email/password.", StatusCodes.BAD_REQUEST);
             }
@@ -68,7 +70,10 @@ async function getUserByEmail(email) {
 }
 
 function validateUser(email, password) {
-    if (!email || !password) {
+
+    const result = jsonschema.validate({email, password}, loginSchema)
+
+    if(!result.valid){
         throw new ExpressError("Email and password required.", StatusCodes.BAD_REQUEST);
     }
 }

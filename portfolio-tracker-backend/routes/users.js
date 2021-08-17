@@ -1,10 +1,12 @@
 import { Router } from 'express';
 import db from '../db.js';
+import { ensureAdmin } from '../middleware/auth.js';
 
 const router = new Router();
 
+
 // Get all users
-router.get("/", async (req, res, next) => {
+router.get("/", ensureAdmin, async (req, res, next) => {
     try {
         const result = await db.query(`SELECT * FROM users`);
 
@@ -71,9 +73,13 @@ router.get("/:id", async (req, res, next) => {
     try {
         const {id} = req.params;
 
-        const results = await db.query('SELECT * FROM USERS WHERE id = $1', [id]);
+        const users = await db.query('SELECT id, email, role FROM users WHERE id = $1', [id]);
+        const securities = await db.query('SELECT id, symbol, quantity FROM securities WHERE user_id=$1', [id]);
 
-        return res.send(results.rows[0]);
+        const user = users.rows[0];
+        user.securities = securities.rows;
+
+        return res.send(user);
     }catch (e){
         return next(e);
     }

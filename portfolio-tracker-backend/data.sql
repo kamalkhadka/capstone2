@@ -4,7 +4,7 @@ CREATE DATABASE portfoliodb;
 
 \c portfoliodb;
 
-DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS users CASCADE;
 
 CREATE TABLE users
 (
@@ -24,4 +24,61 @@ INSERT INTO users
     (email, password)
 VALUES
     ('user1@portfoliotracker.com', '$2b$12$QxTkS94uHsTFVfFX9E8qReJGKoReqX8OsQulNZ9Hu0DbpGB/MBLMe');
+
+DROP TABLE IF EXISTS symbols CASCADE;
+
+CREATE TABLE symbols(
+    id SERIAL PRIMARY KEY,
+    symbol TEXT NOT NULL,
+    name TEXT NOT NULL
+);
+
+DROP TABLE IF EXISTS securities CASCADE;
+
+CREATE TABLE securities 
+(
+    id SERIAL PRIMARY KEY,
+    symbol_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    CONSTRAINT fk_symbols
+      FOREIGN KEY(symbol_id) 
+	  REFERENCES symbols(id)
+	  ON DELETE CASCADE,
+    CONSTRAINT fk_users
+      FOREIGN KEY(user_id) 
+	  REFERENCES users(id)
+	  ON DELETE CASCADE
+);
+
+-- INSERT INTO securities
+--     (symbol, quantity, user_id)
+-- VALUES
+--     ('APPL', 10, 2);
+
+-- INSERT INTO securities
+--     (symbol, quantity, user_id)
+-- VALUES
+--     ('MSFT', 12, 2);
+
+DROP TABLE IF EXISTS transactions;
+
+CREATE TABLE transactions(
+    id SERIAL PRIMARY KEY,
+    price NUMERIC NOT NULL,
+    quantity INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    security_id INTEGER NOT NULL,
+     CONSTRAINT fk_user_transaction
+      FOREIGN KEY(user_id) 
+	  REFERENCES users(id)
+	  ON DELETE CASCADE,
+    CONSTRAINT fk_security
+      FOREIGN KEY(security_id) 
+	  REFERENCES securities(id)
+	  ON DELETE CASCADE
+);
+
+
+
+
 
