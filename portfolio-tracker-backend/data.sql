@@ -66,12 +66,12 @@ CREATE TABLE transactions(
     id SERIAL PRIMARY KEY,
     price NUMERIC NOT NULL,
     quantity INTEGER NOT NULL,
-    user_id INTEGER NOT NULL,
+    -- user_id INTEGER NOT NULL,
     security_id INTEGER NOT NULL,
-     CONSTRAINT fk_user_transaction
-      FOREIGN KEY(user_id) 
-	  REFERENCES users(id)
-	  ON DELETE CASCADE,
+    --  CONSTRAINT fk_user_transaction
+    --   FOREIGN KEY(user_id) 
+	--   REFERENCES users(id)
+	--   ON DELETE CASCADE,
     CONSTRAINT fk_security
       FOREIGN KEY(security_id) 
 	  REFERENCES securities(id)
