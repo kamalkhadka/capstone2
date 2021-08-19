@@ -30,7 +30,8 @@ DROP TABLE IF EXISTS symbols CASCADE;
 CREATE TABLE symbols(
     id SERIAL PRIMARY KEY,
     symbol TEXT NOT NULL,
-    name TEXT NOT NULL
+    name TEXT NOT NULL,
+    onDate DATE NOT NULL DEFAULT(current_date)
 );
 
 DROP TABLE IF EXISTS securities CASCADE;
@@ -38,12 +39,8 @@ DROP TABLE IF EXISTS securities CASCADE;
 CREATE TABLE securities 
 (
     id SERIAL PRIMARY KEY,
-    symbol_id INTEGER NOT NULL,
+    symbol TEXT NOT NULL,
     user_id INTEGER NOT NULL,
-    CONSTRAINT fk_symbols
-      FOREIGN KEY(symbol_id) 
-	  REFERENCES symbols(id)
-	  ON DELETE CASCADE,
     CONSTRAINT fk_users
       FOREIGN KEY(user_id) 
 	  REFERENCES users(id)

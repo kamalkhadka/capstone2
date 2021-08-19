@@ -38,14 +38,14 @@ securitiesRoutes.post("/", async (req, res, next) => {
             throw new ExpressError("Invalid symbol", StatusCodes.BAD_REQUEST);
         }
 
-        const results = await db.query('INSERT INTO securities(symbol_id,  user_id) VALUES ($1, $2) RETURNING id',
-            [symResults.rows[0].id, req.user.id]);
+        const results = await db.query('INSERT INTO securities(symbol,  user_id) VALUES ($1, $2) RETURNING id',
+            [symbol, req.user.id]);
 
         await db.query(`INSERT INTO transactions 
-                        (price, quantity, user_id, security_id)
+                        (price, quantity, security_id)
                         VALUES
-                        ($1, $2, $3, $4)`, 
-                        [price, quantity, req.user.id, results.rows[0].id]);
+                        ($1, $2, $3)`, 
+                        [price, quantity, results.rows[0].id]);
 
         return res.status(201).json(results.rows);
     } catch (e) {

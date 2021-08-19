@@ -73,8 +73,8 @@ router.get("/:id", async (req, res, next) => {
     try {
         const {id} = req.params;
 
-        const users = await db.query('SELECT id, email, role FROM users WHERE id = $1', [id]);
-        const securities = await db.query('SELECT id, symbol, quantity FROM securities WHERE user_id=$1', [id]);
+        const users = await db.query('SELECT id, email FROM users WHERE id = $1', [id]);
+        const securities = await db.query('SELECT id, symbol FROM securities WHERE user_id=$1', [id]);
 
         const user = users.rows[0];
         user.securities = securities.rows;
