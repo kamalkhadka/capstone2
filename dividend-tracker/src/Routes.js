@@ -5,7 +5,7 @@ import Login from "./containers/Login";
 import Signup from "./containers/Signup";
 import NotFound from "./NotFound";
 
-export default function Routes() {
+const Routes = ({ setToken }) => {
     return (
         <Switch>
             <Route exact path="/">
@@ -15,8 +15,11 @@ export default function Routes() {
                 <Signup />
             </Route>
             <Route exact path="/login">
-                <Login />
+                <Login setToken={setToken} />
             </Route>
+            {/* <Route exact path="/dashboard/:symbol">
+                <Symbol />
+            </Route> */}
             <Route exact path="/dashboard">
                 <Dashboard />
             </Route>
@@ -26,3 +29,5 @@ export default function Routes() {
         </Switch>
     );
 }
+
+export default Routes;

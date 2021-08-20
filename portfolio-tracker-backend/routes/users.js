@@ -1,6 +1,9 @@
 import { Router } from 'express';
+import { StatusCodes } from 'http-status-codes';
 import db from '../db.js';
 import { ensureAdmin } from '../middleware/auth.js';
+import bcrypt from "bcrypt";
+import { BCRYPT_WORK_FACTOR } from '../config.js';
 
 const router = new Router();
 
@@ -31,12 +34,22 @@ router.get("/search", async (req, res, next) => {
 
 // Post a user
 router.post("/", async (req, res, next) => {
-    try {
-        const { email, password, type } = req.body;
-        const results = await db.query('INSERT INTO users(email, password, type) VALUES ($1, $2, $3) RETURNING *',
-            [email, password, type]);
 
-        return res.status(201).json(results.rows);
+    try {
+        const { firstName, lastName, email, password } = req.body;
+
+        // validate inputs
+        // check user exist with input email
+
+        const hash = await bcrypt.hash(password, BCRYPT_WORK_FACTOR);
+
+        const results = await db.query(
+            `INSERT INTO users (firstName, lastName, email, password) 
+             VALUES ($1, $2, $3, $4)
+             RETURNING id`, [firstName, lastName, email, hash]);
+
+        return res.status(StatusCodes.CREATED).json("User created");;
+
     } catch (e) {
         return next(e);
     }
@@ -71,7 +84,7 @@ router.delete("/:id", async (req, res, next) => {
 // Get user by id
 router.get("/:id", async (req, res, next) => {
     try {
-        const {id} = req.params;
+        const { id } = req.params;
 
         const users = await db.query('SELECT id, email FROM users WHERE id = $1', [id]);
         const securities = await db.query('SELECT id, symbol FROM securities WHERE user_id=$1', [id]);
@@ -80,7 +93,7 @@ router.get("/:id", async (req, res, next) => {
         user.securities = securities.rows;
 
         return res.send(user);
-    }catch (e){
+    } catch (e) {
         return next(e);
     }
 });

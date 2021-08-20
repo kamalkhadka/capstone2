@@ -1,9 +1,9 @@
 export default function Footer() {
   return (
     <footer>
-      <div class="container">
-        <div class="row text-center">
-          <span class="copyright quick-links">Copyright &copy; Portfolio Builder
+      <div className="container">
+        <div className="row text-center">
+          <span className="copyright quick-links">Copyright &copy; Portfolio Builder
           </span>
         </div>
       </div>

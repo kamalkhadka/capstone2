@@ -7,7 +7,7 @@ export default function Navigation() {
 
       <LinkContainer to="/">
         <Navbar.Brand className="font-weight-bold text-muted">
-          Track Dividend
+          Stock Tracker
         </Navbar.Brand>
       </LinkContainer>
       <Navbar.Toggle />

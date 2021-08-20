@@ -11,19 +11,28 @@ CREATE TABLE users
     id SERIAL PRIMARY KEY,
     email TEXT NOT NULL,
     password TEXT NOT NULL,
+    firstName TEXT NOT NULL,
+    lastName TEXT NOT NULL,
     role TEXT NOT NULL DEFAULT 'user',
     active BOOLEAN NOT NULL DEFAULT (true)
 );
 
 INSERT INTO users 
-    (email, password, role)
+    (email, password,firstName, lastName, role)
 VALUES
-    ('admin@portfoliotracker.com','$2b$12$GC80craVooby6kJ.EitTP.lDQmZDTNFDA.pym31k2tG6GZrQbqaaC', 'admin');
+    ('admin@portfoliotracker.com',
+    '$2b$12$GC80craVooby6kJ.EitTP.lDQmZDTNFDA.pym31k2tG6GZrQbqaaC', 
+    'admin', 
+    'admin', 
+    'admin');
 
 INSERT INTO users
-    (email, password)
+    (email, password, firstName, lastName)
 VALUES
-    ('user1@portfoliotracker.com', '$2b$12$QxTkS94uHsTFVfFX9E8qReJGKoReqX8OsQulNZ9Hu0DbpGB/MBLMe');
+    ('user1@portfoliotracker.com', 
+    '$2b$12$QxTkS94uHsTFVfFX9E8qReJGKoReqX8OsQulNZ9Hu0DbpGB/MBLMe', 
+    'FirstName', 
+    'LastName');
 
 DROP TABLE IF EXISTS symbols CASCADE;
 
