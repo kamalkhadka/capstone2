@@ -32,5 +32,14 @@ class InvestmentApi {
     }
   }
 
+  static async getCurrentUser(id, token){
+    try {
+      let user = await axios.get(`${BASE_API_URL}/users/${id}?token=${token}`);
+      return user;
+    } catch (err) {
+      throw new Error(err.response.data.errorMessage);
+    }
+  }
+
 }
 export default InvestmentApi;

@@ -4,6 +4,7 @@ import db from '../db.js';
 import { ensureAdmin } from '../middleware/auth.js';
 import bcrypt from "bcrypt";
 import { BCRYPT_WORK_FACTOR } from '../config.js';
+import ExpressError from '../expressError.js';
 
 const router = new Router();
 
@@ -86,12 +87,14 @@ router.get("/:id", async (req, res, next) => {
     try {
         const { id } = req.params;
 
-        const users = await db.query('SELECT id, email FROM users WHERE id = $1', [id]);
-        const securities = await db.query('SELECT id, symbol FROM securities WHERE user_id=$1', [id]);
+        if(!req.user || Number(id) !== req.user.id){
+            console.log("User id mismatch");
+            throw new ExpressError("Unauthorized.", StatusCodes.UNAUTHORIZED);
+        }
 
+        const users = await db.query('SELECT id, firstName, lastName, email FROM users WHERE id = $1', [id]);
         const user = users.rows[0];
-        user.securities = securities.rows;
-
+       
         return res.send(user);
     } catch (e) {
         return next(e);

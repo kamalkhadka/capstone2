@@ -22,7 +22,7 @@ app.use(morgan('dev'));
 Symbol.getAll();
 
 // Routes
-app.use(authRoutes);
+app.use("/login", authRoutes);
 app.use("/health-check", healthCheckRoute);
 app.use("/", homeRoutes);
 app.use("/users", userRoutes);

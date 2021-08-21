@@ -20,7 +20,7 @@ const Login = ({ setToken })  => {
         event.preventDefault();
         try {
             const res = await InvestmentApi.login({ email, password });
-            setToken(res.token);
+            setToken(res.data.token);
             history.push("/dashboard");
 
             // return <Redirect to="/dashboard" />

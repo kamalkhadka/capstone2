@@ -12,7 +12,7 @@ const authRoutes = new Router();
 
 
 // Login
-authRoutes.post("/login", async (req, res, next) => {
+authRoutes.post("/", async (req, res, next) => {
     try {
         const { email, password } = req.body;
 

@@ -3,12 +3,10 @@ import { StatusCodes } from 'http-status-codes';
 import client from '../db.js';
 import db from '../db.js';
 import ExpressError from '../expressError.js';
-import { ensureLoggedIn, ensureUser } from '../middleware/auth.js';
+import { ensureAdmin, ensureUser } from '../middleware/auth.js';
 
 const securitiesRoutes = new Router();
 
-securitiesRoutes.use(ensureLoggedIn);
-securitiesRoutes.use(ensureUser);
 
 // Get all securities for a user
 securitiesRoutes.get("/", async (req, res, next) => {
@@ -28,7 +26,7 @@ securitiesRoutes.get("/", async (req, res, next) => {
 });
 
 // Post a security
-securitiesRoutes.post("/", async (req, res, next) => {
+securitiesRoutes.post("/", ensureUser, async (req, res, next) => {
     try {
         const { symbol, quantity, price } = req.body;
 
@@ -54,7 +52,7 @@ securitiesRoutes.post("/", async (req, res, next) => {
 })
 
 // Update security
-securitiesRoutes.patch("/:id", async (req, res, next) => {
+securitiesRoutes.patch("/:id", ensureUser, async (req, res, next) => {
     try {
         
 
@@ -65,7 +63,7 @@ securitiesRoutes.patch("/:id", async (req, res, next) => {
 })
 
 // Delete a security
-securitiesRoutes.delete("/:id", async (req, res, next) => {
+securitiesRoutes.delete("/:id", ensureUser, async (req, res, next) => {
     try {
 
         // select a security
