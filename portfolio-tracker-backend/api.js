@@ -11,5 +11,17 @@ export async function symbols(){
     return await client.symbols();
 }
 
+export async function mostActive(){
+    return await client.list("mostactive");
+}
+
+export async function winners(){
+    return await client.list("gainers");
+}
+
+export async function slaggers(){
+    return await client.list("losers");
+}
+
 export default client;
 

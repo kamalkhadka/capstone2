@@ -3,7 +3,7 @@ import { LinkContainer } from "react-router-bootstrap";
 
 export default function Navigation() {
   return (
-    <Navbar collapseOnSelect bg="light" expand="md" className="mb-3">
+    <Navbar collapseOnSelect bg="" expand="md" className="mb-3 px-3">
 
       <LinkContainer to="/">
         <Navbar.Brand className="font-weight-bold text-muted">

@@ -23,5 +23,14 @@ class InvestmentApi {
     }
   }
 
+  static async market(){
+    try {
+      let res = await axios.get(`${BASE_API_URL}/`);
+      return res;
+    } catch (err) {
+      throw new Error(err.response.data.errorMessage);
+    }
+  }
+
 }
 export default InvestmentApi;

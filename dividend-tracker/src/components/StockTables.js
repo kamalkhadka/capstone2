@@ -4,9 +4,9 @@ import StockTable from "./StockTable.js";
 
 const StockTables = ({ stocks }) => {
 
-    const mostActive = [];
-    const gainers = [];
-    const losers = [];
+    const mostActive = stocks.data.actives || [];
+    const gainers = stocks.data.gainers || [];
+    const losers = stocks.data.losers || [];
 
     return (
         <>

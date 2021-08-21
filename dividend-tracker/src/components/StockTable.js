@@ -1,12 +1,12 @@
-import { Card, Table } from "react-bootstrap";
+import {  Table } from "react-bootstrap";
 import TableRow from "./TableRow.js";
 
 const StockTable = ({ title, stocks }) => {
     return (
         <>
             <h3>{title}</h3>
-            <Card>
-                <Table>
+            
+                <Table hover>
                     <thead>
                         <tr>
                             <th>Symbol</th>
@@ -16,10 +16,14 @@ const StockTable = ({ title, stocks }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {stocks.map((stock) => <TableRow symbol lastPrice change percentChange/>)}
+                        {stocks.map((stock) => 
+                            <TableRow key={stock.symbol} 
+                                            symbol={stock.symbol} l
+                                            astPrice change={stock.change} 
+                                            percentChange={stock.changePercent}/>)}
                     </tbody>
                 </Table>
-            </Card>
+            
         </>
     );
 };

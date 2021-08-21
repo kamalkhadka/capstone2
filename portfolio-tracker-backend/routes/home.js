@@ -1,11 +1,14 @@
 import { Router } from 'express';
 import { StatusCodes } from 'http-status-codes';
+import { mostActive, winners, slaggers } from '../api.js';
 
 const router = new Router();
 
 router.get("/", async (req, res, next) => {
-    console.log("HOME");
-    return res.send("HOME");
+    const actives = await mostActive();
+    const gainers = await winners();
+    const  losers = await slaggers();
+    return res.send({ actives, gainers, losers});
 });
 
 export default router;

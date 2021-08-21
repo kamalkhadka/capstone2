@@ -17,7 +17,7 @@ const Routes = ({ setToken }) => {
             <Route exact path="/login">
                 <Login setToken={setToken} />
             </Route>
-            {/* <Route exact path="/dashboard/:symbol">
+            {/* <Route exact path="/investment/:symbol">
                 <Symbol />
             </Route> */}
             <Route exact path="/dashboard">

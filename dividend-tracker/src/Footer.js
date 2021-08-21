@@ -3,7 +3,7 @@ export default function Footer() {
     <footer>
       <div className="container">
         <div className="row text-center">
-          <span className="copyright quick-links">Copyright &copy; Portfolio Builder
+          <span className="copyright quick-links">Copyright &copy; Stock Tracker
           </span>
         </div>
       </div>
