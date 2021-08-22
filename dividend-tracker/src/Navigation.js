@@ -7,10 +7,8 @@ const Navigation = ({ logout }) => {
 
   const { currentUser } = useContext(UserContext);
 
-  console.log(currentUser);
-
   return (
-    <Navbar collapseOnSelect expand="md" className="mb-3 px-3">
+    <Navbar className="mb-3 px-3">
 
       <LinkContainer to="/">
         <Navbar.Brand className="font-weight-bold text-muted">
@@ -22,24 +20,21 @@ const Navigation = ({ logout }) => {
         {!currentUser &&
           <Nav>
             <LinkContainer to="/signup">
-              <Nav.Link>Signup</Nav.Link>
+              <Nav.Link className="text-muted">Signup</Nav.Link>
             </LinkContainer>
             <LinkContainer to="/login">
-              <Nav.Link>Login</Nav.Link>
+              <Nav.Link className="text-muted">Login</Nav.Link>
             </LinkContainer>
           </Nav>
         }
 
         {currentUser &&
           <Nav>
-            <LinkContainer to="/dashboard">
-              <Nav.Link>Dashboard</Nav.Link>
-            </LinkContainer>
             <LinkContainer to="/profile">
-              <Nav.Link>Profile</Nav.Link>
+              <Nav.Link className="text-muted">Profile</Nav.Link>
             </LinkContainer>
             <LinkContainer to="/">
-              <Nav.Link onClick={logout}>Logout</Nav.Link>
+              <Nav.Link className="text-muted" onClick={logout}>Logout</Nav.Link>
             </LinkContainer>
           </Nav>
         }

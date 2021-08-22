@@ -19,12 +19,13 @@ function App() {
       try {
         let { id } = jwt_decode(token);
         let currentUser = await InvestmentApi.getCurrentUser(id, token);
-        setCurrentUser(currentUser);
+        setCurrentUser(currentUser.data);
       } catch (err) {
         setCurrentUser(null);
       }
     }
     getCurrentUser();
+
   }, [token]);
 
   const handleLogout = () => {

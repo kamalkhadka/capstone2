@@ -1,6 +1,16 @@
+import { useContext } from "react";
 import { Button, Card, Col, Row, Table } from "react-bootstrap";
+import { Redirect } from "react-router-dom";
+import UserContext from "../UserContext";
 
 export default function Dashboard() {
+
+    const {currentUser} = useContext(UserContext);
+
+    if(!currentUser){
+        return <Redirect to="/" />;
+    }
+
     return (
         <>
             <Row className="mb-3">

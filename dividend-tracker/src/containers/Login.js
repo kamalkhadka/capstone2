@@ -8,22 +8,17 @@ const Login = ({ setToken })  => {
     const [password, setPassword] = useState("");
     const [alert, setAlert] = useState("");
 
-    document.title = "Login";
-
     const history = useHistory();
 
-    function validateForm() {
-        return email.length > 0 && password.length > 0;
-    }
+    document.title = "Login";
 
     async function handleSubmit(event) {
         event.preventDefault();
         try {
             const res = await InvestmentApi.login({ email, password });
             setToken(res.data.token);
-            history.push("/dashboard");
 
-            // return <Redirect to="/dashboard" />
+            history.push("/");
         } catch (err) {
             setAlert(err.message);
             setEmail("");
@@ -47,7 +42,9 @@ const Login = ({ setToken })  => {
                     <Form.Group size="lg" controlId="email">
                         <Form.Label>Email</Form.Label>
                         <Form.Control
-                            autoFocus type="email"
+                            autoFocus 
+                            type="email"
+                            required
                             value={email}
                             onChange={(e) => setEmail(e.target.value)} />
                     </Form.Group>
@@ -55,12 +52,15 @@ const Login = ({ setToken })  => {
                         <Form.Label>Password</Form.Label>
                         <Form.Control
                             type="password"
+                            required
                             value={password}
                             onChange={(e) => setPassword(e.target.value)} />
                     </Form.Group>
-                    <Button className="mt-3 block" size="lg" type="submit" disabled={!validateForm()}>
-                        Login
-                    </Button>
+                    <div className="d-grid gap-2 mt-3">
+                        <Button size="lg" type="submit">
+                            Signup
+                        </Button>
+                    </div>
                 </Form>
             </div>
         </div>

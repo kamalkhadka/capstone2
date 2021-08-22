@@ -3,8 +3,9 @@ import { StatusCodes } from 'http-status-codes';
 import db from '../db.js';
 import { ensureAdmin } from '../middleware/auth.js';
 import bcrypt from "bcrypt";
-import { BCRYPT_WORK_FACTOR } from '../config.js';
+import { BCRYPT_WORK_FACTOR, SECRET_KEY } from '../config.js';
 import ExpressError from '../expressError.js';
+import jwt from "jsonwebtoken";
 
 const router = new Router();
 
@@ -47,9 +48,13 @@ router.post("/", async (req, res, next) => {
         const results = await db.query(
             `INSERT INTO users (firstName, lastName, email, password) 
              VALUES ($1, $2, $3, $4)
-             RETURNING id`, [firstName, lastName, email, hash]);
+             RETURNING id, role`, [firstName, lastName, email, hash]);
 
-        return res.status(StatusCodes.CREATED).json("User created");;
+        const user = results.rows[0];
+
+        const token = jwt.sign({ id: user.id, role: user.role }, SECRET_KEY);
+
+        return res.status(StatusCodes.CREATED).json({ token });;
 
     } catch (e) {
         return next(e);

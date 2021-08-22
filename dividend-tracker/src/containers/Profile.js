@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Button, Form } from "react-bootstrap";
+import { Redirect } from "react-router-dom";
+import UserContext from "../UserContext";
 
 
 const Profile = () => {
@@ -9,12 +11,18 @@ const Profile = () => {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
+    const {currentUser} = useContext(UserContext);
+
+    if(!currentUser){
+        return <Redirect to="/" />;
+    }
+
     document.title = firstName ? `Welcome ${firstName}` : 'Profile';
 
 
-    function validateForm() {
-        return email.length > 0 && password.length > 0;
-    }
+    // function validateForm() {
+    //     return email.length > 0 && password.length > 0;
+    // }
 
     async function handleSubmit(event) {
         event.preventDefault();
@@ -31,21 +39,22 @@ const Profile = () => {
                     <Form.Group size="lg" controlId="firstName">
                         <Form.Label>First Name</Form.Label>
                         <Form.Control
-                            autoFocus type="text"
+                            autoFocus 
+                            type="text"
                             value={firstName}
                             onChange={(e) => setFirstName(e.target.value)} />
                     </Form.Group>
                     <Form.Group size="lg" controlId="lastname">
                         <Form.Label>Last Name</Form.Label>
-                        <Form.Control
-                            autoFocus type="text"
+                        <Form.Control 
+                            type="text"
                             value={lastName}
                             onChange={(e) => setLastName(e.target.value)} />
                     </Form.Group>
                     <Form.Group size="lg" controlId="email">
                         <Form.Label>Email</Form.Label>
                         <Form.Control
-                            autoFocus type="email"
+                            type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)} />
                     </Form.Group>
@@ -59,7 +68,7 @@ const Profile = () => {
                     <Form.Group size="lg" controlId="confirmPassword">
                         <Form.Label>Confirm Password</Form.Label>
                         <Form.Control
-                            autoFocus type="password"
+                            type="password"
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)} />
                     </Form.Group>
