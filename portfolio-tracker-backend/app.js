@@ -3,6 +3,7 @@ import morgan from 'morgan';
 import userRoutes from './routes/users.js';
 import authRoutes from './routes/auth.js';
 import homeRoutes from "./routes/home.js";
+import stockRoutes from "./routes/stocks.js";
 import healthCheckRoute from './routes/healthcheck.js';
 import authenticateJWT from './middleware/auth.js';
 import securitiesRoutes from './routes/securities.js';
@@ -25,6 +26,7 @@ Symbol.getAll();
 app.use("/login", authRoutes);
 app.use("/health-check", healthCheckRoute);
 app.use("/", homeRoutes);
+app.use("/stocks", stockRoutes);
 app.use("/users", userRoutes);
 app.use("/securities", securitiesRoutes);
 

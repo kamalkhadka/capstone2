@@ -27,7 +27,9 @@ export default function Symbol() {
 
         return (
             <>
-                {stock}
+                <h2 className="text-center">{symbol}</h2>
+                {JSON.stringify(stock)}
+
             </>
         );
     } else {

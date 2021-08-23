@@ -93,21 +93,14 @@ class InvestmentApi {
     }
   }
 
-  static async deleteUser(id, token) {
+  static async deleteUser(id, token){
     let res = await axios.delete(`${BASE_API_URL}/users/${id}?token=${token}`);
     return res.data;
-  }
+  } 
 
-  static async yesterday(symbol) {
-    let stock = {
-      "close": 144.88,
-      "high": 144.88,
-      "low": 137.82,
-      "open": 143.52,
-      "symbol": "IBM",
-      "volume": 2667917,
-    };
-    return JSON.stringify(stock);
+  static async yesterday(symbol){
+    let res = await axios.get(`${BASE_API_URL}/stocks/${symbol}`);
+    return res.data;
   }
 
 }
