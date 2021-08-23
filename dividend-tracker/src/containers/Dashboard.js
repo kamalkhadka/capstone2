@@ -11,9 +11,12 @@ export default function Dashboard() {
         return <Redirect to="/" />;
     }
 
+    document.title = 'Dashboard';
+
     return (
         <>
-            <Row className="mb-3">
+            <h1>Welcome {currentUser.firstname}</h1>
+            <Row className="mt-3 mb-3">
                 <Col>
                     <Card>
                         <Card.Body>$51,130.69 <br />Value

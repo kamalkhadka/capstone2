@@ -1,4 +1,6 @@
 import axios from "axios";
+import ValidationError from "./ValidationError";
+import jwt_decode from "jwt-decode";
 
 const BASE_API_URL = "http://localhost:3001";
 
@@ -23,7 +25,7 @@ class InvestmentApi {
     }
   }
 
-  static async market(){
+  static async market() {
     try {
       let res = await axios.get(`${BASE_API_URL}/`);
       return res;
@@ -32,13 +34,80 @@ class InvestmentApi {
     }
   }
 
-  static async getCurrentUser(id, token){
+  static async getCurrentUser(id, token) {
     try {
       let user = await axios.get(`${BASE_API_URL}/users/${id}?token=${token}`);
       return user;
     } catch (err) {
       throw new Error(err.response.data.errorMessage);
     }
+  }
+
+  static async updateCurrentUser(user, token) {
+    try {
+
+      if (!user) {
+        throw new ValidationError("Missing user");
+      }
+
+      if (user.updatePassword !== user.updateConfirmPassword) {
+        throw new ValidationError("Password mismatch");
+      }
+
+      let updateUser = {};
+
+      if (user.updateFirstName) {
+        updateUser.firstName = user.updateFirstName;
+      }
+
+      if (user.updateLastName) {
+        updateUser.lastName = user.updateLastName;
+      }
+
+      if (user.updateEmail) {
+        updateUser.email = user.updateEmail;
+      }
+
+      if (user.updatePassword) {
+        updateUser.password = user.updatePassword;
+      }
+
+      if (updateUser.firstName || updateUser.lastName || updateUser.email || updateUser.password) {
+        updateUser.token = token;
+
+        const { id } = jwt_decode(token);
+
+        let res = await axios.patch(`${BASE_API_URL}/users/${id}`, updateUser);
+        return res.data;
+
+      } else {
+        throw new ValidationError("Please update values and then submit.");
+      }
+
+
+    } catch (err) {
+      if (err instanceof ValidationError) {
+        throw err;
+      }
+      throw new Error(err.response.data.errorMessage);
+    }
+  }
+
+  static async deleteUser(id, token) {
+    let res = await axios.delete(`${BASE_API_URL}/users/${id}?token=${token}`);
+    return res.data;
+  }
+
+  static async yesterday(symbol) {
+    let stock = {
+      "close": 144.88,
+      "high": 144.88,
+      "low": 137.82,
+      "open": 143.52,
+      "symbol": "IBM",
+      "volume": 2667917,
+    };
+    return JSON.stringify(stock);
   }
 
 }

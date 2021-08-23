@@ -4,28 +4,29 @@ import Home from "./containers/Home";
 import Login from "./containers/Login";
 import Profile from "./containers/Profile";
 import Signup from "./containers/Signup";
+import Symbol from "./containers/Symbol";
 import NotFound from "./NotFound";
 
-const Routes = ({ setToken }) => {
+const Routes = ({ token, setToken, logout }) => {
     return (
         <Switch>
             <Route exact path="/">
                 <Home />
             </Route>
             <Route exact path="/signup">
-                <Signup setToken={setToken}/>
+                <Signup setToken={setToken} />
             </Route>
             <Route exact path="/login">
                 <Login setToken={setToken} />
             </Route>
-            {/* <Route exact path="/investment/:symbol">
+            <Route exact path="/stock/:symbol">
                 <Symbol />
-            </Route> */}
+            </Route>
             <Route exact path="/dashboard">
-                <Dashboard />
+                <Dashboard token={token} />
             </Route>
             <Route exact path="/profile">
-                <Profile />
+                <Profile  token={token} logout={logout}/>
             </Route>
             <Route>
                 <NotFound />

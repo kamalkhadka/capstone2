@@ -38,7 +38,7 @@ function App() {
       <BrowserRouter>
         <UserContext.Provider value={{currentUser, setCurrentUser}}>
           <Navigation logout={handleLogout} />
-          <Routes setToken={setToken} />
+          <Routes setToken={setToken} token={token} logout={handleLogout}/>
         </UserContext.Provider>
       </BrowserRouter>
       <Footer />

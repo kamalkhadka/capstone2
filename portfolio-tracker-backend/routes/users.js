@@ -1,11 +1,12 @@
 import { Router } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import db from '../db.js';
-import { ensureAdmin } from '../middleware/auth.js';
+import { ensureAdmin, ensureUser } from '../middleware/auth.js';
 import bcrypt from "bcrypt";
 import { BCRYPT_WORK_FACTOR, SECRET_KEY } from '../config.js';
 import ExpressError from '../expressError.js';
 import jwt from "jsonwebtoken";
+import sqlForPartialUpdate from '../helpers/partialUpdate.js';
 
 const router = new Router();
 
@@ -62,25 +63,41 @@ router.post("/", async (req, res, next) => {
 })
 
 // Update user, return user
-router.patch("/:id", async (req, res, next) => {
+router.patch("/:id", ensureUser, async (req, res, next) => {
     try {
         const { id } = req.params;
-        const { email, oldPass, newPass } = req.body;
 
-        const results = await db.query(
-            'UPDATE users set password=$1 WHERE id=$2 RETUNING *', [newPass, id]
-        );
+        if (req.body.password) {
+            req.body.password = await bcrypt.hash(req.body.password, BCRYPT_WORK_FACTOR);
+        }
 
-        return res.send(results.rows);
+        if (req.body.token) {
+            delete req.body.token;
+        }
+
+        let { query, values } = sqlForPartialUpdate("users", req.body, "id", id);
+
+        const results = await db.query(query, values);
+
+        const user = results.rows[0];
+
+        if(user){
+            delete user.password;
+            delete user.role;
+            delete user.active;
+        }
+
+        return res.send(user);
     } catch (e) {
+        console.log(e.message);
         return next(e);
     }
 })
 
-// Soft delete a user
-router.delete("/:id", async (req, res, next) => {
+
+router.delete("/:id", ensureUser, async (req, res, next) => {
     try {
-        // update user set active = 0
+        await db.query(`DELETE FROM users WHERE id=$1`, [req.params.id]);
         return res.json({ message: "DELETED" });
     } catch (e) {
         return next(e);
@@ -92,14 +109,14 @@ router.get("/:id", async (req, res, next) => {
     try {
         const { id } = req.params;
 
-        if(!req.user || Number(id) !== req.user.id){
+        if (!req.user || Number(id) !== req.user.id) {
             console.log("User id mismatch");
             throw new ExpressError("Unauthorized.", StatusCodes.UNAUTHORIZED);
         }
 
         const users = await db.query('SELECT id, firstName, lastName, email FROM users WHERE id = $1', [id]);
         const user = users.rows[0];
-       
+
         return res.send(user);
     } catch (e) {
         return next(e);

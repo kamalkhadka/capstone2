@@ -15,20 +15,37 @@ export default function authenticateJWT(req, res, next) {
     }
 }
 
-export function ensureAdmin(req, res, next){
-    if(!req.user || req.user.role !== 'admin'){
+export function ensureAdmin(req, res, next) {
+    if (!req.user || req.user.role !== 'admin') {
         return next(new ExpressError("Unauthorized.", StatusCodes.UNAUTHORIZED));
     }
 
     return next();
 }
 
-export function ensureUser(req, res, next){
+export function ensureUser(req, res, next) {
 
-        if(req.user.id !== req.param.id){
+    try {
+        
+        const payload = jwt.verify(req.body.token || req.query.token, SECRET_KEY);
+        req.user = payload;
+
+
+        if (!req.user) {
+            console.log("Missing user from request.");
+            throw new ExpressError("Unauthorized", StatusCodes.UNAUTHORIZED);
+        }
+
+        if (req.user.id !== Number(req.params.id)) {
+            console.log("User id and parameter id didn't match ", req.user.id, req.params.id);
             throw new ExpressError("Unauthorized", StatusCodes.UNAUTHORIZED);
         }
 
         return next();
-   
+
+    } catch (error) {
+        console.log(error.message);
+        return next(new ExpressError("Unauthorized", StatusCodes.UNAUTHORIZED));
+    }
+
 }
