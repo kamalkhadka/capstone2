@@ -22,6 +22,7 @@ function App() {
         setCurrentUser(currentUser.data);
       } catch (err) {
         setCurrentUser(null);
+        setToken(null);
       }
     }
     getCurrentUser();
@@ -38,7 +39,7 @@ function App() {
       <BrowserRouter>
         <UserContext.Provider value={{currentUser, setCurrentUser}}>
           <Navigation logout={handleLogout} />
-          <Routes setToken={setToken} token={token} logout={handleLogout}/>
+          <Routes setToken={setToken} token={token} logout={handleLogout} />
         </UserContext.Provider>
       </BrowserRouter>
       <Footer />

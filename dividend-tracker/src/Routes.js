@@ -1,10 +1,11 @@
 import { Route, Switch } from "react-router-dom";
+import Symbol from "./components/Symbol";
 import Dashboard from "./containers/Dashboard";
 import Home from "./containers/Home";
 import Login from "./containers/Login";
 import Profile from "./containers/Profile";
 import Signup from "./containers/Signup";
-import Symbol from "./containers/Symbol";
+import Stock from "./containers/Stock";
 import NotFound from "./NotFound";
 
 const Routes = ({ token, setToken, logout }) => {
@@ -18,6 +19,9 @@ const Routes = ({ token, setToken, logout }) => {
             </Route>
             <Route exact path="/login">
                 <Login setToken={setToken} />
+            </Route>
+            <Route exact path="/stock">
+                <Stock setToken={setToken}  token={token}/>
             </Route>
             <Route exact path="/stock/:symbol">
                 <Symbol />

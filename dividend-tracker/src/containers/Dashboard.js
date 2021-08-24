@@ -1,10 +1,9 @@
 import { useContext } from "react";
-import { Button, Card, Col, Row, Table } from "react-bootstrap";
-import { Redirect } from "react-router-dom";
+import { Table } from "react-bootstrap";
+import { Link, Redirect } from "react-router-dom";
 import UserContext from "../UserContext";
 
 export default function Dashboard() {
-
     const {currentUser} = useContext(UserContext);
 
     if(!currentUser){
@@ -15,8 +14,9 @@ export default function Dashboard() {
 
     return (
         <>
+        <div className="text-center">
             <h1>Welcome {currentUser.firstname}</h1>
-            <Row className="mt-3 mb-3">
+            {/* <Row className="mt-3 mb-3">
                 <Col>
                     <Card>
                         <Card.Body>$51,130.69 <br />Value
@@ -35,61 +35,49 @@ export default function Dashboard() {
                         </Card.Body>
                     </Card>
                 </Col>
-            </Row>
+            </Row> */}
 
-            <Button className="mb-3" variant="primary">Add Stock</Button>
-
-            <Table striped bordered hover>
+            <Link className="btn btn-primary mb-3" to="/stock">Add Stock</Link>
+            </div>
+            {
+                currentUser.stocks.length > 0 ?
+                <Table striped bordered hover>
                 <thead>
                     <tr>
-                        <th>Security</th>
+                        <th>Symbol</th>
                         <th>Price</th>
                         <th>Quantity</th>
                         <th>Cost</th>
-                        <th>Gain/Loss</th>
+                        {/* <th>Gain/Loss</th>
                         <th>Value</th>
-                        <th></th>
+                        <th></th> */}
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>APPL <br /> Apple Inc</td>
-                        <td>151.12</td>
+                        <td>$151.12</td>
                         <td>70</td>
-                        <td>8933.86</td>
-                        <td>+1660</td>
+                        <td>$8933.86</td>
+                        {/* <td>+1660</td>
                         <td>10594</td>
-                        <td><a href="/buy">Buy</a> | <a href="/sell">Sell</a></td>
+                        <td><a href="/buy">Buy</a> | <a href="/sell">Sell</a></td> */}
 
                     </tr>
+                   
                     <tr>
-                        <td>MSFT <br /> Microsoft Corp</td>
-                        <td>151.12</td>
-                        <td>70</td>
-                        <td>8933.86</td>
-                        <td>+1660</td>
-                        <td>10594</td>
-                        <td><a href="/buy">Buy</a> | <a href="/sell">Sell</a></td>
-
-                    </tr>
-                    <tr>
-                        <td>JPM <br /> JPMorgan Chase &amp; Co</td>
-                        <td>151.12</td>
-                        <td>70</td>
-                        <td>8933.86</td>
-                        <td>+1660</td>
-                        <td>10594</td>
-                        <td><a href="/buy">Buy</a> | <a href="/sell">Sell</a></td>
-                        
-                    </tr>
-                    <tr>
-                        <td colSpan="3">Totals</td>
-                        <td>1000</td>
+                        <td>Totals</td>
+                        <td>$1000</td>
                         <td>2000</td>
-                        <td>3000</td>
+                        <td>$3000</td>
                     </tr>
                 </tbody>
             </Table>
+            :
+            <p className="lead text-center">Start by adding stock to track your portfolio.</p>
+            }
+            
+            
         </>
     );
 }

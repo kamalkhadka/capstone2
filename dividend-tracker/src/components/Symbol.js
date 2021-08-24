@@ -1,7 +1,7 @@
-import { useContext, useEffect, useState } from "react";
-import { Redirect, useParams } from "react-router-dom";
+import {  useEffect, useState } from "react";
+import {  useParams } from "react-router-dom";
+import KeyStat from "./KeyStat.js";
 import InvestmentApi from "../InvestmentApi.js";
-import UserContext from "../UserContext.js";
 
 export default function Symbol() {
     const [stock, setStock] = useState();
@@ -17,9 +17,8 @@ export default function Symbol() {
 
     }, [symbol]);
 
-    const { currentUser } = useContext(UserContext);
 
-    
+
 
     document.title = `Viewing ${symbol}`;
 
@@ -27,9 +26,13 @@ export default function Symbol() {
 
         return (
             <>
-                <h2 className="text-center">{symbol}</h2>
-                {JSON.stringify(stock)}
-
+                <div className="row justify-content-center">
+                    <h1 className="text-center">{symbol}</h1>
+                    <p className="text-center lead">KEY STATS</p>
+                    <div className="col-md-6">
+                        <KeyStat stock={stock} />
+                    </div>
+                </div>
             </>
         );
     } else {
