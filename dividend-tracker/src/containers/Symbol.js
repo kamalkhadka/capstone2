@@ -1,9 +1,13 @@
-import {  useEffect, useState } from "react";
+import {  useContext, useEffect, useState } from "react";
 import {  useParams } from "react-router-dom";
-import KeyStat from "./KeyStat.js";
-import InvestmentApi from "../InvestmentApi.js";
+import KeyStat from "../components/KeyStat";
+import StockEditForm from "../components/StockEditForm";
+import InvestmentApi from "../InvestmentApi";
+import UserContext from "../UserContext";
 
-export default function Symbol() {
+
+export default function Symbol({token, setToken}) {
+    const {currentUser} = useContext(UserContext);
     const [stock, setStock] = useState();
     const { symbol } = useParams();
 
@@ -17,10 +21,8 @@ export default function Symbol() {
 
     }, [symbol]);
 
-
-
-
     document.title = `Viewing ${symbol}`;
+
 
     if (stock) {
 
@@ -33,6 +35,10 @@ export default function Symbol() {
                         <KeyStat stock={stock} />
                     </div>
                 </div>
+
+                {currentUser &&
+                    <StockEditForm token={token} setToken={setToken}/>
+                }
             </>
         );
     } else {

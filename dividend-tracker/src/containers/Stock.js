@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
-import { Link, useHistory, } from "react-router-dom";
+import { Link, Redirect, useHistory, } from "react-router-dom";
 import InvestmentApi from "../InvestmentApi.js";
 import UserContext from "../UserContext.js";
 
@@ -12,6 +12,10 @@ const Stock = ({setToken, token }) => {
     const [alert, setAlert] = useState("")
 
     const history = useHistory();
+
+    if (!currentUser) {
+        return <Redirect to="/" />;
+    }
 
 
 

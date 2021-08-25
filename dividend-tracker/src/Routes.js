@@ -1,5 +1,5 @@
 import { Route, Switch } from "react-router-dom";
-import Symbol from "./components/Symbol";
+import Symbol from "./containers/Symbol";
 import Dashboard from "./containers/Dashboard";
 import Home from "./containers/Home";
 import Login from "./containers/Login";
@@ -24,7 +24,7 @@ const Routes = ({ token, setToken, logout }) => {
                 <Stock setToken={setToken}  token={token}/>
             </Route>
             <Route exact path="/stock/:symbol">
-                <Symbol />
+                <Symbol token={token} setToken={setToken}/>
             </Route>
             <Route exact path="/dashboard">
                 <Dashboard token={token} />

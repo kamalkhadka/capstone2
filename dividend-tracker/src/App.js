@@ -27,7 +27,7 @@ function App() {
     }
     getCurrentUser();
 
-  }, [token]);
+  }, [token, setToken]);
 
   const handleLogout = () => {
     setToken(null);

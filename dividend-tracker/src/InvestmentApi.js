@@ -103,8 +103,25 @@ class InvestmentApi {
     return res.data;
   }
 
+
   static async addStock(symbol, id, stock) {
     let res = await axios.post(`${BASE_API_URL}/stocks/${symbol}/${id}`, stock);
+    return res.data;
+  }
+
+  static async deleteStock(id,  token){
+    let res = await axios.delete(`${BASE_API_URL}/securities/${id}?token=${token}`)
+    return res.data;
+  }
+
+  // static async getStock(id, token){
+  //   let res = await axios.get(`${BASE_API_URL}/securities/${id}`);
+  //   return res.data;
+  // }
+
+  static async updateStock(stock , token){
+    stock.token = token;
+    let res = await axios.patch(`${BASE_API_URL}/securities/${stock.id}`, stock);
     return res.data;
   }
 

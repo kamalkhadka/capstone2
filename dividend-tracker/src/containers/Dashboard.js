@@ -2,21 +2,56 @@ import { useContext } from "react";
 import { Table } from "react-bootstrap";
 import { Link, Redirect } from "react-router-dom";
 import UserContext from "../UserContext";
+import _ from "lodash";
 
 export default function Dashboard() {
-    const {currentUser} = useContext(UserContext);
+    const { currentUser } = useContext(UserContext);
 
-    if(!currentUser){
+    if (!currentUser) {
         return <Redirect to="/" />;
     }
 
     document.title = 'Dashboard';
 
+    const stocks = currentUser.stocks.map((stk) => {
+        let stock = {};
+
+        stock.id = stk.id;
+        stock.symbol = stk.symbol;
+
+        let prices = [];
+        let quantities = [];
+
+        if (stk.transactions.length > 0) {
+            let transactions = stk.transactions;
+            transactions.forEach(s => {
+                prices.push(Number(s.price));
+                quantities.push(Number(s.quantity));
+            });
+        }
+
+
+        if (prices.length > 0 && quantities.length > 0) {
+            stock.price = _.sum(prices);
+
+            stock.quantity = _.sum(quantities);
+        }
+
+
+        return stock;
+    });
+
+    const totalPrice = stocks.map((s) => s.price)
+                             .reduce(((a, p) => isNaN(p) ? a + 0 : a + Number(p)), 0);
+    const totalQuantity = stocks.map((s) => s.quantity)
+                            .reduce(((a, q) => isNaN(q) ? a + 0 : a + Number(q)), 0);
+
+
     return (
         <>
-        <div className="text-center">
-            <h1>Welcome {currentUser.firstname}</h1>
-            {/* <Row className="mt-3 mb-3">
+            <div className="text-center">
+                <h1>Welcome {currentUser.firstname}</h1>
+                {/* <Row className="mt-3 mb-3">
                 <Col>
                     <Card>
                         <Card.Body>$51,130.69 <br />Value
@@ -37,47 +72,42 @@ export default function Dashboard() {
                 </Col>
             </Row> */}
 
-            <Link className="btn btn-primary mb-3" to="/stock">Add Stock</Link>
+                <Link className="btn btn-primary mb-3" to="/stock">Add Stock</Link>
             </div>
             {
                 currentUser.stocks.length > 0 ?
-                <Table striped bordered hover>
-                <thead>
-                    <tr>
-                        <th>Symbol</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Cost</th>
-                        {/* <th>Gain/Loss</th>
+                    <Table striped bordered hover>
+                        <thead>
+                            <tr>
+                                <th>Symbol</th>
+                                <th>Purchase Price</th>
+                                <th>Quantity</th>
+                                {/*<th>Cost</th>
+                         <th>Gain/Loss</th>
                         <th>Value</th>
                         <th></th> */}
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>APPL <br /> Apple Inc</td>
-                        <td>$151.12</td>
-                        <td>70</td>
-                        <td>$8933.86</td>
-                        {/* <td>+1660</td>
-                        <td>10594</td>
-                        <td><a href="/buy">Buy</a> | <a href="/sell">Sell</a></td> */}
-
-                    </tr>
-                   
-                    <tr>
-                        <td>Totals</td>
-                        <td>$1000</td>
-                        <td>2000</td>
-                        <td>$3000</td>
-                    </tr>
-                </tbody>
-            </Table>
-            :
-            <p className="lead text-center">Start by adding stock to track your portfolio.</p>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {stocks.map((stock) => 
+                                <tr key={stock.id}>
+                                    <td><Link to={'/stock/' + stock.symbol}>{stock.symbol}</Link></td>
+                                    <td>${stock.price || "-"}</td>
+                                    <td>{stock.quantity || "-"}</td>
+                                </tr>)
+                            }
+                            <tr>
+                                <td>Totals</td>
+                                <td>${totalPrice}</td>
+                                <td>{totalQuantity}</td>
+                            </tr>
+                        </tbody>
+                    </Table>
+                    :
+                    <p className="lead text-center">Start by adding stock to track your portfolio.</p>
             }
-            
-            
+
+
         </>
     );
 }
