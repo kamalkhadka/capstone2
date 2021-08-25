@@ -1,5 +1,5 @@
-# Portfolio Tracker
-It is an web application that will allow you to create a list of stocks and track them to view their value, gain, loss. 
+# Stock Tracker
+It is an web application that will allow you to create a list of stocks and track them. 
 
 ## Tech Stack
 - Front End: React, Bootstrap
